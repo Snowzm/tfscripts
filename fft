@@ -1,15 +1,20 @@
 import tensorflow as tf
 import math
 
-def fft_shift(x):
+def fft_shift(x, inverse=False):
     # [b, h, w, c]
-    shape = x.get_shape().as_list()
-    h = math.ceil(shape[1]/2)
-    w = math.ceil(shape[2]/2)
+    shape = x.shape
+    if inverse:
+        h = math.floor(shape[1] / 2)
+        w = math.floor(shape[2] / 2)
+    else:
+        h = math.ceil(shape[1] / 2)
+        w = math.ceil(shape[2] / 2)
+    
     x1 = x[:, 0:h, 0:w, :]
     x2 = x[:, 0:h, w-shape[2]:, :]
-    x12 = tf.concat([x1, x2], axis=-2)
+    x21 = tf.concat([x2, x1], axis=-2)
     x3 = x[:, h-shape[1]:, 0:w, :]
     x4 = x[:, h-shape[1]:, w - shape[2]:, :]
-    x34 = tf.concat([x3, x4], axis=-2)
-    return tf.concat([x12, x34], axis=-3)
+    x43 = tf.concat([x4, x3], axis=-2)
+    return tf.concat([x43, x21], axis=-3)
