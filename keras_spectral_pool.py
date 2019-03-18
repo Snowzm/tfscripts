@@ -2,8 +2,8 @@
 # mengxue_zhang@outlook.com
 
 # usage:
-# Spectrum_Pooling(out_size=42)
-# Spectrum_Pooling(pool_size=(2, 2))
+# SpectralPooling(out_size=42)
+# SpectralPooling(pool_size=(2, 2))
 
 import tensorflow as tf
 from keras.layers import Layer
